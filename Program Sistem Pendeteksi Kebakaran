@@ -1,0 +1,51 @@
+//TE01_2021_Kelompok_6_Sistem_Mikroprosessor
+//Aqiil_Rangga_Agsana_2103051
+//Azzhar_Muhammad_Ikmal_2100663
+//Yasir_Abdul_Khalim_2102845
+
+//Sistem_Pendeteksi_Kebakaran_Berbasis_Arduino_dengan_Menggunakan_Sensor_Api_dan_Sensor_Asap_dengan_Buzzer_Sebagai_Aktuator
+
+// Mendefinisikan pin yang digunakan
+const int apiSensorPin = A0; // Sensor Api (Analog Input)
+const int asapSensorPin = A1; // Sensor Asap (Analog Input)
+const int buzzerPin = 9; // Buzzer (Digital Output)
+const int ledPin = 10; // LED (Digital Output)
+
+void setup() {
+  // Menginisialisasi komunikasi serial
+  Serial.begin(9600);
+  
+  // Mengatur pin sebagai input atau output
+  pinMode(apiSensorPin, INPUT);
+  pinMode(asapSensorPin, INPUT);
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // Membaca nilai sensor api dan asap
+  int apiValue = analogRead(apiSensorPin);
+  int asapValue = analogRead(asapSensorPin);
+  
+  // Menampilkan nilai sensor pada monitor serial
+  Serial.print("Nilai Sensor Api: ");
+  Serial.println(apiValue);
+  Serial.print("Nilai Sensor Asap: ");
+  Serial.println(asapValue);
+  
+  // Jika terdeteksi kebakaran (nilai sensor melebihi batas tertentu)
+  if (apiValue > 110 || asapValue > 500) {
+    // Mengaktifkan buzzer dan LED
+    digitalWrite(buzzerPin, HIGH);
+    digitalWrite(ledPin, HIGH);
+    
+    // Menampilkan pesan kebakaran pada monitor serial
+    Serial.println("KEBAKARAN! Segera evakuasi!");
+  } 
+  else {
+    // Mematikan buzzer dan LED
+    digitalWrite(buzzerPin, LOW);
+    digitalWrite(ledPin, LOW);
+    delay(1000);
+  }
+}
